@@ -6,7 +6,14 @@ public class Program
 {
     static void Main()
     {
-        const string MenuTitle = "\t===== MAIN MENU - CODEQUEST =====";
+        const string MenuTitle = """              
+  __  __ _____ _   _ _   _  
+ |  \/  | ____| \ | | | | | 
+ | |\/| |  _| |  \| | | | | 
+ | |  | | |___| |\  | |_| | 
+ |_|  |_|_____|_| \_|\___/  
+                            
+""";
         const string MenuSubtitle = "===== Welcome, {0} the {1} with level {2} =====\n";
         const string MenuOption1 = "1. Train your wizard ";
         const string MenuOption2 = "2. Increase LVL ";
