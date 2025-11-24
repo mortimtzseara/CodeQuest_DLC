@@ -115,9 +115,11 @@ public class Program
                         wizardName = Console.ReadLine();
 
                         if (string.IsNullOrWhiteSpace(wizardName))
+                        {
                             Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(InputErrorMessage);
-                        Console.ForegroundColor = ConsoleColor.White;
+                            Console.WriteLine(InputErrorMessage);
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
 
                     } while (string.IsNullOrWhiteSpace(wizardName));
 
@@ -351,9 +353,11 @@ public class Program
                             input = Console.ReadLine();
 
                             if (!Int32.TryParse(input, out xAxis) || xAxis < 0 || xAxis > 4)
+                            {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(InputErrorMessage);
                                 Console.ForegroundColor = ConsoleColor.White;
+                            }
 
                         } while (!Int32.TryParse(input, out xAxis) || xAxis < 0 || xAxis > 4);
 
@@ -363,9 +367,11 @@ public class Program
                             input = Console.ReadLine();
 
                             if (!Int32.TryParse(input, out yAxis) || yAxis < 0 || yAxis > 4)
+                            {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(InputErrorMessage);
                                 Console.ForegroundColor = ConsoleColor.White;
+                            }
 
                         } while (!Int32.TryParse(input, out yAxis) || yAxis < 0 || yAxis > 4);
                                                 
@@ -466,9 +472,11 @@ public class Program
                             input = Console.ReadLine();
 
                             if (!Int32.TryParse(input, out shopOp) || shopOp < 0 || shopOp > 5)
+                            {
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine(InputErrorMessage);
                                 Console.ForegroundColor = ConsoleColor.White;
+                            }
 
                         } while (!Int32.TryParse(input, out shopOp) || shopOp < 0 || shopOp > 5);
 
@@ -567,10 +575,12 @@ public class Program
                         input = Console.ReadLine();
 
                         if (!Int32.TryParse(input, out opDecode) || opDecode < 1 || opDecode > 3)
+                        {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(InputErrorMessage);
                             Console.ForegroundColor = ConsoleColor.White;
-
+                        }
+                        
                     } while (!Int32.TryParse(input, out opDecode) || opDecode < 1 || opDecode > 3);
 
                     switch (opDecode)
