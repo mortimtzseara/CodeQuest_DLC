@@ -136,7 +136,7 @@ public class Program
                     Console.WriteLine(TrainingCompleteMsg, wizardName, totalPower, wizardTitle);
 
                     break;
-                    case 2: //Increase Level
+                case 2: //Increase Level
 
                     const int MinValue = 0;
                     const string MsgChapter2 = "\nA wild {0} appears! Rolling dice to determine the outcome of the battle...";
@@ -330,5 +330,5 @@ public class Program
                     }
 
                     Console.WriteLine();
-
-                    break;
+break;
+                    
