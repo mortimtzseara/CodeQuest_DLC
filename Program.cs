@@ -136,3 +136,295 @@ public class Program
                     Console.WriteLine(TrainingCompleteMsg, wizardName, totalPower, wizardTitle);
 
                     break;
+                case 2: //Increase Level
+
+                    const int MinValue = 0;
+                    const string MsgChapter2 = "\nA wild {0} appears! Rolling dice to determine the outcome of the battle...";
+                    const string MonsterHP = "The {0} has {1} HP.";
+                    const string PressKey = "Press any key to roll the dice...";
+                    const string DiceRoll = "You rolled a {0}";
+                    const string MonsterDamage = "The monster takes damage!";
+                    const string MonsterDefeated = "The {0} has been defeated!";
+                    const string LevelIncrease = "{0} levels up!\n";
+
+                    string[] DiceNumber = { """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |       | |
+                             |   ♥   | /
+                             |       |/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥      | |
+                             |       | /
+                             |      ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥      | |
+                             |   ♥   | /
+                             |      ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |       | /
+                             |♥     ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |   ♥   | /
+                             |♥     ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |♥     ♥| /
+                             |♥     ♥|/
+                             '-------'
+                        """ };
+                    string[] monsters = { "Wandering Skeleton 💀", "Forest Goblin 👹", "Green Slime 🟢", "Ember Wolf 🐺", "Giant Spider 🕷️", "Iron Golem 🤖", "Lost Necromancer 🧝‍♂️", "Ancient Dragon 🐉" };
+                    int[] monsterHP = { 3, 5, 10, 11, 18, 15, 20, 50 };
+                    int monsterTotalHP, monsterNum, diceRoll;
+
+                    monsterNum = random.Next(MinValue, monsters.Length);
+                    monsterTotalHP = monsterHP[monsterNum];
+
+                    Console.WriteLine(MsgChapter2, monsters[monsterNum]);
+                    Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
+                    do
+                    {
+                        diceRoll = random.Next(MinValue, DiceNumber.Length);
+
+                        Console.WriteLine(DiceRoll, diceRoll + 1);
+
+                        if (monsterTotalHP < (diceRoll + 1))
+                        {
+                            monsterTotalHP = 0;
+                        }
+                        else
+                        {
+                            monsterTotalHP -= (diceRoll + 1);
+                        }
+
+                        Console.WriteLine(DiceNumber[diceRoll]);
+                        Console.WriteLine(MonsterDamage);
+                        Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
+
+                        if (monsterTotalHP > 0)
+                        {
+                            Console.WriteLine(PressKey);
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine(MonsterDefeated, monsters[monsterNum]);
+                            Console.WriteLine(LevelIncrease, wizardName);
+
+                            wizardLvl += 1;
+                        }
+
+                    } while (monsterTotalHP > 0);
+
+                    Console.WriteLine();
+
+                    break;
+
+                case 3: //Loot the mine
+
+                    const string MsgChapter3 = "You have 5 attempts to mine for bits";
+                    const string XAxis = "Insert de X axis (A number between 0-4):";
+                    const string YAxis = "Insert de Y axis (A number between 0-4):";
+                    const string PositionMined = "You mine at position [{0}][{1}] ";
+                    const string MsgNotFound = "but found nothing.";
+                    const string MsgFound = "and you get {0} bits.";
+                    const string Coin = "🪙";
+                    const string NoCoin = "❌";
+                    const int tries = 5, maxValue = 2, minValue = 0, MinBits = 5, MaxBits = 51;
+
+                    int xAxis, yAxis, bits;
+                    string MsgLoot = "";
+                    string[,] mine = new string[5, 5];
+                    string[,] mineOutput = {
+                        { " ", "0", "1", "2", "3", "4" },
+                        { "0", "➖", "➖", "➖", "➖", "➖" },
+                        { "1", "➖", "➖", "➖", "➖", "➖" },
+                        { "2", "➖", "➖", "➖", "➖", "➖" },
+                        { "3", "➖", "➖", "➖", "➖", "➖" },
+                        { "4", "➖", "➖", "➖", "➖", "➖" }
+                    };
+                    ;
+
+                    Console.WriteLine(MsgChapter3);
+
+                    for (int i = 0; i < mine.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < mine.GetLength(1); j++)
+                        {
+                            mine[i, j] = random.Next(minValue, maxValue) == 0 ? Coin : NoCoin;
+                        }
+                    }
+
+                    for (int x = 0; x < mineOutput.GetLength(0); x++)
+                    {
+                        for (int y = 0; y < mineOutput.GetLength(1); y++)
+                        {
+                            Console.Write($"{mineOutput[x, y]}\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    for (int i = 0; i < tries; i++)
+                    {
+
+                        do
+                        {
+                            Console.WriteLine(XAxis);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out xAxis) || xAxis < 0 || xAxis > 4);
+
+                        do
+                        {
+                            Console.WriteLine(YAxis);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out yAxis) || yAxis < 0 || yAxis > 4);
+
+                        if (mine[xAxis, yAxis].Equals(Coin))
+                        {
+                            mineOutput[xAxis + 1, yAxis + 1] = Coin;
+                            mine[xAxis, yAxis] = NoCoin;
+
+                            bits = random.Next(MinBits, MaxBits);
+                            MsgLoot = string.Format(MsgFound, bits);
+                            wizardBits += bits;
+                        }
+                        else
+                        {
+                            MsgLoot = MsgNotFound;
+                            mineOutput[xAxis + 1, yAxis + 1] = NoCoin;
+                        }
+
+                        Console.WriteLine(string.Concat(string.Format(PositionMined, xAxis, yAxis), MsgLoot));
+
+                        for (int x = 0; x < mineOutput.GetLength(0); x++)
+                        {
+                            for (int y = 0; y < mineOutput.GetLength(1); y++)
+                            {
+                                Console.Write($"{mineOutput[x, y]}\t");
+                            }
+                            Console.WriteLine();
+                        }
+                    }
+
+                    Console.WriteLine();
+
+                    break;
+
+                case 4:
+
+                    const string EmptyInventory = "Your inventory is empty";
+                    const string InventoryList = "Your inventory cointains:";
+
+                    if (wizardInventory.Equals(""))
+                    {
+                        Console.WriteLine(EmptyInventory);
+                    }
+                    else
+                    {
+                        Console.WriteLine(InventoryList);
+                        string[] showInventory = wizardInventory.Split(',');
+                        foreach (string item in showInventory)
+                        {
+                            Console.WriteLine($" 🔸{item}");
+                        }
+                    }
+                    break;
+                case 5:
+
+                    const string MsgChapter5 = "You chose to buy items";
+                    const string MsgBits = "You have {0} bits available";
+                    const string MsgShop = "Items available for purchase:";
+                    const string MsgOptionsShop = "Select the item you wish to buy (1 - 5) (0 to exit):";
+                    const string MsgPurchase = "You have purchased: {0}";
+                    const string MsgExitShop = "Thank you for visiting the shop";
+                    const string MsgNotEnoughBits = "You don't have enough bits for this purchase...";
+
+                    int shopOp;
+                    string[] shopItems = { "Iron Dagger 🗡️", "Healing Potion ⚗️", "Ancient Key 🗝️", "Crossbow 🏹", "Metal Shield 🛡️" };
+                    int[] price = { 30, 10, 50, 40, 20 };
+
+                    Console.WriteLine(MsgChapter5);
+
+                    do
+                    {
+                        Console.WriteLine(MsgBits, wizardBits);
+                        Console.WriteLine(MsgShop);
+
+                        for (int i = 0; i < shopItems.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1} - {shopItems[i]} - Price: {price[i]}");
+                        }
+
+                        do
+                        {
+                            Console.WriteLine(MsgOptionsShop);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out shopOp) || shopOp < 0 || shopOp > 5);
+
+                        if (shopOp != 0 && wizardBits >= price[shopOp - 1])
+                        {
+
+                            wizardInventory = wizardInventory.Equals("") ? shopItems[shopOp - 1] : string.Concat(wizardInventory, ",", shopItems[shopOp - 1]);
+
+                            wizardBits -= price[shopOp - 1];
+
+                            Console.WriteLine(MsgPurchase, shopItems[shopOp - 1]);
+                        }
+                        else if (shopOp != 0 && wizardBits < price[shopOp - 1])
+                        {
+                            Console.WriteLine(MsgNotEnoughBits);
+                        }
+                        else
+                        {
+                            Console.WriteLine(MsgExitShop);
+                        }
+
+                    } while (shopOp != 0);
+
+                    break;
+                case 6:
+                    const string MsgChapter6 = "Available attacks for level {0}";
+                    const string MsgEndChapter6 = "Keep training to unlock new powers!";
+
+                    string[][] attacksByLevel = new string[][]
+                    {
+                        new string [] { "Magic Spark 💫" },
+                        new string [] { "Fireball 🔥", "Ice Ray 🥏", "Arcane Shield ⚕️" },
+                        new string [] { "Meteor ☄️", "Pure Energy Explosion 💥", "Minor Charm 🎭", "Air Strike 🍃" },
+                        new string [] { "Wave of Light ⚜️", "Storm of Wings 🐦" },
+                        new string [] { "Cataclysm 🌋", "Portal of Chaos 🌀", "Arcane Blood Pact 🩸", "Elemental Storm ⛈️" }
+                    };
+
+                    Console.WriteLine(MsgChapter6, wizardLvl);
+
+                    for (int j = 0; j < attacksByLevel[wizardLvl - 1].Length; j++)
+                    {
+                        Console.WriteLine($" 🔸{attacksByLevel[wizardLvl - 1][j]}");
+                    }
+
+                    Console.WriteLine(MsgEndChapter6);
+
+                    break;
