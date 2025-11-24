@@ -405,3 +405,26 @@ public class Program
                     } while (shopOp != 0);
 
                     break;
+                case 6:
+                    const string MsgChapter6 = "Available attacks for level {0}";
+                    const string MsgEndChapter6 = "Keep training to unlock new powers!";
+
+                    string[][] attacksByLevel = new string[][]
+                    {
+                        new string [] { "Magic Spark 💫" },
+                        new string [] { "Fireball 🔥", "Ice Ray 🥏", "Arcane Shield ⚕️" },
+                        new string [] { "Meteor ☄️", "Pure Energy Explosion 💥", "Minor Charm 🎭", "Air Strike 🍃" },
+                        new string [] { "Wave of Light ⚜️", "Storm of Wings 🐦" },
+                        new string [] { "Cataclysm 🌋", "Portal of Chaos 🌀", "Arcane Blood Pact 🩸", "Elemental Storm ⛈️" }
+                    };
+
+                    Console.WriteLine(MsgChapter6, wizardLvl);
+
+                    for (int j = 0; j < attacksByLevel[wizardLvl - 1].Length; j++)
+                    {
+                        Console.WriteLine($" 🔸{attacksByLevel[wizardLvl - 1][j]}");
+                    }
+
+                    Console.WriteLine(MsgEndChapter6);
+
+                    break;
