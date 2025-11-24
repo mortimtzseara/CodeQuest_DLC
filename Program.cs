@@ -136,6 +136,113 @@ public class Program
                     Console.WriteLine(TrainingCompleteMsg, wizardName, totalPower, wizardTitle);
 
                     break;
+                    case 2: //Increase Level
+
+                    const int MinValue = 0;
+                    const string MsgChapter2 = "\nA wild {0} appears! Rolling dice to determine the outcome of the battle...";
+                    const string MonsterHP = "The {0} has {1} HP.";
+                    const string PressKey = "Press any key to roll the dice...";
+                    const string DiceRoll = "You rolled a {0}";
+                    const string MonsterDamage = "The monster takes damage!";
+                    const string MonsterDefeated = "The {0} has been defeated!";
+                    const string LevelIncrease = "{0} levels up!\n";
+
+                    string[] DiceNumber = { """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |       | |
+                             |   ♥   | /
+                             |       |/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥      | |
+                             |       | /
+                             |      ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥      | |
+                             |   ♥   | /
+                             |      ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |       | /
+                             |♥     ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |   ♥   | /
+                             |♥     ♥|/
+                             '-------'
+                        """, """
+                               .-------.
+                              /       /|
+                             /_______/ |
+                             |♥     ♥| |
+                             |♥     ♥| /
+                             |♥     ♥|/
+                             '-------'
+                        """ };
+                    string[] monsters = { "Wandering Skeleton 💀", "Forest Goblin 👹", "Green Slime 🟢", "Ember Wolf 🐺", "Giant Spider 🕷️", "Iron Golem 🤖", "Lost Necromancer 🧝‍♂️", "Ancient Dragon 🐉" };
+                    int[] monsterHP = { 3, 5, 10, 11, 18, 15, 20, 50 };
+                    int monsterTotalHP, monsterNum, diceRoll;
+
+                    monsterNum = random.Next(MinValue, monsters.Length);
+                    monsterTotalHP = monsterHP[monsterNum];
+
+                    Console.WriteLine(MsgChapter2, monsters[monsterNum]);
+                    Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
+                    do
+                    {
+                        diceRoll = random.Next(MinValue, DiceNumber.Length);
+
+                        Console.WriteLine(DiceRoll, diceRoll + 1);
+
+                        if (monsterTotalHP < (diceRoll + 1))
+                        {
+                            monsterTotalHP = 0;
+                        }
+                        else
+                        {
+                            monsterTotalHP -= (diceRoll + 1);
+                        }
+
+                        Console.WriteLine(DiceNumber[diceRoll]);
+                        Console.WriteLine(MonsterDamage);
+                        Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
+
+                        if (monsterTotalHP > 0)
+                        {
+                            Console.WriteLine(PressKey);
+                            Console.ReadLine();
+                        }
+                        else
+                        {
+                            Console.WriteLine(MonsterDefeated, monsters[monsterNum]);
+                            Console.WriteLine(LevelIncrease, wizardName);
+
+                            wizardLvl += 1;
+                        }
+
+                    } while (monsterTotalHP > 0);
+
+                    Console.WriteLine();
+
+                    break;
+
                 case 3: //Loot the mine
 
                     const string MsgChapter3 = "You have 5 attempts to mine for bits";
