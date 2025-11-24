@@ -20,8 +20,10 @@ public class Program
         const string InputErrorMessage = "Invalid input. Please enter a number between 0 and 7.";
         const string ExitMessage = "Exiting game. Goodbye!";
 
-        int op = 0, wizardLvl = 1, wizardPower = 0, totalPower = 0, wizardBits = 0; ;
-        string wizardName = "", wizardTitle = "", wizardInventory = "";
+        int op = 0, wizardLvl = 1, wizardPower = 0, wizardBits = 0; ;
+        string wizardName = "", wizardTitle = "", input;
+        string[] wizardInventory = new string[0];
+        bool[] decodedScrolls = { false, false, false };
 
         Random random = new Random();
 
@@ -48,12 +50,10 @@ public class Program
             }
             catch (FormatException)
             {
-                Console.WriteLine(InputErrorMessage);
                 op = -1;
             }
             catch (Exception)
             {
-                Console.WriteLine(InputErrorMessage);
                 op = -1;
             }
 
@@ -73,8 +73,16 @@ public class Program
 
                     int hours, power;
 
-                    Console.Write(InsertNamePrompt);
-                    wizardName = Console.ReadLine();
+                    do
+                    {
+
+                        Console.Write(InsertNamePrompt);
+                        wizardName = Console.ReadLine();
+
+                        if (string.IsNullOrWhiteSpace(wizardName))
+                            Console.WriteLine(InputErrorMessage);
+
+                    } while (string.IsNullOrWhiteSpace(wizardName));
 
                     wizardName = wizardName.Trim();
                     wizardName = string.Concat(wizardName.Substring(0, 1).ToUpper(), wizardName.Substring(1, wizardName.Length - 1).ToLower());
@@ -84,7 +92,7 @@ public class Program
 
                         hours = random.Next(MinHoursPerDay, MaxHoursPerDay);
                         power = random.Next(MinPowerPerDay, MaxPowerPerDay);
-                        totalPower += power;
+                        wizardPower += power;
 
                         Console.WriteLine(TrainingMsg, day, wizardName, hours, power);
 
@@ -106,22 +114,22 @@ public class Program
                     const string RankB = "Elarion de les Brases";
                     const string RankA = "ITB-Wizard el Gris";
 
-                    if (totalPower < 20)
+                    if (wizardPower < 20)
                     {
                         finalMessage = MsgE;
                         wizardTitle = RankE;
                     }
-                    else if (totalPower >= 20 && totalPower < 30)
+                    else if (wizardPower >= 20 && wizardPower < 30)
                     {
                         finalMessage = MsgD;
                         wizardTitle = RankD;
                     }
-                    else if (totalPower >= 30 && totalPower < 35)
+                    else if (wizardPower >= 30 && wizardPower < 35)
                     {
                         finalMessage = MsgC;
                         wizardTitle = RankC;
                     }
-                    else if (totalPower >= 35 && totalPower < 40)
+                    else if (wizardPower >= 35 && wizardPower < 40)
                     {
                         finalMessage = MsgB;
                         wizardTitle = RankB;
@@ -133,7 +141,7 @@ public class Program
                     }
 
                     Console.WriteLine(finalMessage);
-                    Console.WriteLine(TrainingCompleteMsg, wizardName, totalPower, wizardTitle);
+                    Console.WriteLine(TrainingCompleteMsg, wizardName, wizardPower, wizardTitle);
 
                     break;
                 case 2: //Increase Level
@@ -146,6 +154,8 @@ public class Program
                     const string MonsterDamage = "The monster takes damage!";
                     const string MonsterDefeated = "The {0} has been defeated!";
                     const string LevelIncrease = "{0} levels up!\n";
+                    const string MsgMaxLvl = "You reached the maximum level.";
+                    const int MaxLvl = 5;
 
                     string[] DiceNumber = { """
                                .-------.
@@ -200,46 +210,55 @@ public class Program
                     int[] monsterHP = { 3, 5, 10, 11, 18, 15, 20, 50 };
                     int monsterTotalHP, monsterNum, diceRoll;
 
-                    monsterNum = random.Next(MinValue, monsters.Length);
-                    monsterTotalHP = monsterHP[monsterNum];
-
-                    Console.WriteLine(MsgChapter2, monsters[monsterNum]);
-                    Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
-                    do
+                    if (wizardLvl == MaxLvl)
                     {
-                        diceRoll = random.Next(MinValue, DiceNumber.Length);
+                        Console.WriteLine(MsgMaxLvl);
+                    }
+                    else
+                    {
 
-                        Console.WriteLine(DiceRoll, diceRoll + 1);
 
-                        if (monsterTotalHP < (diceRoll + 1))
-                        {
-                            monsterTotalHP = 0;
-                        }
-                        else
-                        {
-                            monsterTotalHP -= (diceRoll + 1);
-                        }
+                        monsterNum = random.Next(MinValue, monsters.Length);
+                        monsterTotalHP = monsterHP[monsterNum];
 
-                        Console.WriteLine(DiceNumber[diceRoll]);
-                        Console.WriteLine(MonsterDamage);
+                        Console.WriteLine(MsgChapter2, monsters[monsterNum]);
                         Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
-
-                        if (monsterTotalHP > 0)
+                        do
                         {
-                            Console.WriteLine(PressKey);
-                            Console.ReadLine();
-                        }
-                        else
-                        {
-                            Console.WriteLine(MonsterDefeated, monsters[monsterNum]);
-                            Console.WriteLine(LevelIncrease, wizardName);
+                            diceRoll = random.Next(MinValue, DiceNumber.Length);
 
-                            wizardLvl += 1;
-                        }
+                            Console.WriteLine(DiceRoll, diceRoll + 1);
 
-                    } while (monsterTotalHP > 0);
+                            if (monsterTotalHP < (diceRoll + 1))
+                            {
+                                monsterTotalHP = 0;
+                            }
+                            else
+                            {
+                                monsterTotalHP -= (diceRoll + 1);
+                            }
 
-                    Console.WriteLine();
+                            Console.WriteLine(DiceNumber[diceRoll]);
+                            Console.WriteLine(MonsterDamage);
+                            Console.WriteLine(MonsterHP, monsters[monsterNum], monsterTotalHP);
+
+                            if (monsterTotalHP > 0)
+                            {
+                                Console.WriteLine(PressKey);
+                                Console.ReadLine();
+                            }
+                            else
+                            {
+                                Console.WriteLine(MonsterDefeated, monsters[monsterNum]);
+                                Console.WriteLine(LevelIncrease, wizardName);
+
+                                wizardLvl += 1;
+                            }
+
+                        } while (monsterTotalHP > 0);
+
+                        Console.WriteLine();
+                    }
 
                     break;
 
@@ -293,14 +312,22 @@ public class Program
                         do
                         {
                             Console.WriteLine(XAxis);
+                            input = Console.ReadLine();
 
-                        } while (!Int32.TryParse(Console.ReadLine(), out xAxis) || xAxis < 0 || xAxis > 4);
+                            if (!Int32.TryParse(input, out xAxis) || xAxis < 0 || xAxis > 4)
+                                Console.WriteLine(InputErrorMessage);
+
+                        } while (!Int32.TryParse(input, out xAxis) || xAxis < 0 || xAxis > 4);
 
                         do
                         {
                             Console.WriteLine(YAxis);
+                            input = Console.ReadLine();
 
-                        } while (!Int32.TryParse(Console.ReadLine(), out yAxis) || yAxis < 0 || yAxis > 4);
+                            if (!Int32.TryParse(input, out yAxis) || yAxis < 0 || yAxis > 4)
+                                Console.WriteLine(InputErrorMessage);
+
+                        } while (!Int32.TryParse(input, out yAxis) || yAxis < 0 || yAxis > 4);
 
                         if (mine[xAxis, yAxis].Equals(Coin))
                         {
@@ -338,20 +365,20 @@ public class Program
                     const string EmptyInventory = "Your inventory is empty";
                     const string InventoryList = "Your inventory cointains:";
 
-                    if (wizardInventory.Equals(""))
+                    if (wizardInventory.Length == 0)
                     {
                         Console.WriteLine(EmptyInventory);
                     }
                     else
                     {
                         Console.WriteLine(InventoryList);
-                        string[] showInventory = wizardInventory.Split(',');
-                        foreach (string item in showInventory)
+                        foreach (string item in wizardInventory)
                         {
                             Console.WriteLine($" 🔸{item}");
                         }
                     }
                     break;
+
                 case 5:
 
                     const string MsgChapter5 = "You chose to buy items";
@@ -381,17 +408,31 @@ public class Program
                         do
                         {
                             Console.WriteLine(MsgOptionsShop);
+                            input = Console.ReadLine();
 
-                        } while (!Int32.TryParse(Console.ReadLine(), out shopOp) || shopOp < 0 || shopOp > 5);
+                            if (!Int32.TryParse(input, out shopOp) || shopOp < 0 || shopOp > 5)
+                                Console.WriteLine(InputErrorMessage);
+
+                        } while (!Int32.TryParse(input, out shopOp) || shopOp < 0 || shopOp > 5);
 
                         if (shopOp != 0 && wizardBits >= price[shopOp - 1])
                         {
+                            string[] auxInventory = new string[wizardInventory.Length + 1];
 
-                            wizardInventory = wizardInventory.Equals("") ? shopItems[shopOp - 1] : string.Concat(wizardInventory, ",", shopItems[shopOp - 1]);
+                            for (int i = 0; i < wizardInventory.Length; i++)
+                            {
+
+                                auxInventory[i] = wizardInventory[i];
+
+                            }
+
+                            auxInventory[auxInventory.Length - 1] = shopItems[shopOp - 1];
+                            wizardInventory = auxInventory;
 
                             wizardBits -= price[shopOp - 1];
 
                             Console.WriteLine(MsgPurchase, shopItems[shopOp - 1]);
+
                         }
                         else if (shopOp != 0 && wizardBits < price[shopOp - 1])
                         {
@@ -405,6 +446,7 @@ public class Program
                     } while (shopOp != 0);
 
                     break;
+
                 case 6:
                     const string MsgChapter6 = "Available attacks for level {0}";
                     const string MsgEndChapter6 = "Keep training to unlock new powers!";
@@ -428,3 +470,125 @@ public class Program
                     Console.WriteLine(MsgEndChapter6);
 
                     break;
+                case 7:
+
+                    const string MsgChapter7 = "You found an ancient scroll with encrypted messages!\n";
+                    const string MsgScroll = "Scrolls to decode:";
+                    const string MsgDecode = "\nChoose a decoding operation:";
+                    const string Decode1 = "Decipher spell (remove spaces)";
+                    const string Decode2 = "Count magical runes (vowels)";
+                    const string Decode3 = "Extract secret code (numbers)";
+                    const string MsgDecode1 = "Deciphered Spell: ";
+                    const string MsgDecode2 = "{0} magical runes (vowels) found";
+                    const string MsgDecode3 = "🔮 Decoded number: ";
+                    const string Scan = "Scanning: ...";
+                    const string MsgDecodingComlpete = "Congratulations! You have successfully decoded all parts of the scroll.";
+
+                    char[] vowels = { 'a', 'e', 'i', 'o', 'u' };
+                    char[] numbers = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+                    string scroll1 = "\"The 🐲 sleeps in the mountain of fire 🔥\"";
+                    string scroll2 = "\"Ancient magic flows through the crystal caves\"";
+                    string scroll3 = "\"Spell: Ignis 5 🔥, Aqua 6 💧, Terra 3 🌍, Ventus 8 🌪️\"";
+                    int opDecode, vowelsCount = 0;
+
+                    Console.WriteLine(MsgChapter7);
+                    Console.WriteLine(MsgScroll);
+                    Console.WriteLine($"  1. {scroll1}");
+                    Console.WriteLine($"  2. {scroll2}");
+                    Console.WriteLine($"  3. {scroll3}");
+
+
+                    do
+                    {
+
+                        Console.WriteLine(MsgDecode);
+                        Console.WriteLine($"  1. {Decode1}");
+                        Console.WriteLine($"  2. {Decode2}");
+                        Console.WriteLine($"  3. {Decode3}");
+                        input = Console.ReadLine();
+
+                        if (!Int32.TryParse(input, out opDecode) || opDecode < 1 || opDecode > 3)
+                            Console.WriteLine(InputErrorMessage);
+
+                    } while (!Int32.TryParse(input, out opDecode) || opDecode < 1 || opDecode > 3);
+
+                    switch (opDecode)
+                    {
+                        case 1:
+
+                            Console.WriteLine($"{MsgDecode1}{scroll1.Replace(" ", "")}");
+
+                            decodedScrolls[0] = true;
+
+                            break;
+
+                        case 2:
+
+                            char[] vowelsCheck = scroll2.ToLower().ToCharArray();
+
+                            foreach (char letter in vowelsCheck)
+                            {
+                                foreach (char vowel in vowels)
+                                {
+                                    if (letter.Equals(vowel))
+                                    {
+                                        vowelsCount++;
+                                    }
+                                }
+                            }
+
+                            Console.WriteLine(MsgDecode2, vowelsCount);
+
+                            decodedScrolls[1] = true;
+
+                            break;
+
+                        case 3:
+
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine(Scan);
+                            Thread.Sleep(3000);
+                            Console.Write(MsgDecode3);
+
+                            char[] numbersCheck = scroll3.ToCharArray();
+
+                            foreach (char letter in numbersCheck)
+                            {
+                                foreach (char number in numbers)
+                                {
+                                    if (letter.Equals(number))
+                                    {
+                                        Console.Write(letter);
+                                    }
+                                }
+                            }
+
+                            Console.WriteLine();
+
+                            decodedScrolls[2] = true;
+
+                            break;
+                    }
+
+                    if (decodedScrolls[0] && decodedScrolls[1] && decodedScrolls[2])
+                    {
+                        Console.WriteLine(MsgDecodingComlpete);
+                    }
+
+                    break;
+
+
+                case 0:
+
+                    Console.WriteLine(ExitMessage);
+
+                    break;
+                default:
+
+                    Console.WriteLine(InputErrorMessage);
+
+                    break;
+            }
+        } while (op != 0);
+    }
+}
