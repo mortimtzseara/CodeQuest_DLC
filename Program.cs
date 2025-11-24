@@ -330,5 +330,25 @@ public class Program
                     }
 
                     Console.WriteLine();
-break;
-                    
+
+                    break;
+
+                case 4:
+
+                    const string EmptyInventory = "Your inventory is empty";
+                    const string InventoryList = "Your inventory cointains:";
+
+                    if (wizardInventory.Equals(""))
+                    {
+                        Console.WriteLine(EmptyInventory);
+                    }
+                    else
+                    {
+                        Console.WriteLine(InventoryList);
+                        string[] showInventory = wizardInventory.Split(',');
+                        foreach (string item in showInventory)
+                        {
+                            Console.WriteLine($" 🔸{item}");
+                        }
+                    }
+                    break;
