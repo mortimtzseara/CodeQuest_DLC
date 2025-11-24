@@ -352,3 +352,56 @@ public class Program
                         }
                     }
                     break;
+                case 5:
+
+                    const string MsgChapter5 = "You chose to buy items";
+                    const string MsgBits = "You have {0} bits available";
+                    const string MsgShop = "Items available for purchase:";
+                    const string MsgOptionsShop = "Select the item you wish to buy (1 - 5) (0 to exit):";
+                    const string MsgPurchase = "You have purchased: {0}";
+                    const string MsgExitShop = "Thank you for visiting the shop";
+                    const string MsgNotEnoughBits = "You don't have enough bits for this purchase...";
+
+                    int shopOp;
+                    string[] shopItems = { "Iron Dagger 🗡️", "Healing Potion ⚗️", "Ancient Key 🗝️", "Crossbow 🏹", "Metal Shield 🛡️" };
+                    int[] price = { 30, 10, 50, 40, 20 };
+
+                    Console.WriteLine(MsgChapter5);
+
+                    do
+                    {
+                        Console.WriteLine(MsgBits, wizardBits);
+                        Console.WriteLine(MsgShop);
+
+                        for (int i = 0; i < shopItems.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1} - {shopItems[i]} - Price: {price[i]}");
+                        }
+
+                        do
+                        {
+                            Console.WriteLine(MsgOptionsShop);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out shopOp) || shopOp < 0 || shopOp > 5);
+
+                        if (shopOp != 0 && wizardBits >= price[shopOp - 1])
+                        {
+
+                            wizardInventory = wizardInventory.Equals("") ? shopItems[shopOp - 1] : string.Concat(wizardInventory, ",", shopItems[shopOp - 1]);
+
+                            wizardBits -= price[shopOp - 1];
+
+                            Console.WriteLine(MsgPurchase, shopItems[shopOp - 1]);
+                        }
+                        else if (shopOp != 0 && wizardBits < price[shopOp - 1])
+                        {
+                            Console.WriteLine(MsgNotEnoughBits);
+                        }
+                        else
+                        {
+                            Console.WriteLine(MsgExitShop);
+                        }
+
+                    } while (shopOp != 0);
+
+                    break;
