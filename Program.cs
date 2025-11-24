@@ -136,3 +136,92 @@ public class Program
                     Console.WriteLine(TrainingCompleteMsg, wizardName, totalPower, wizardTitle);
 
                     break;
+                case 3: //Loot the mine
+
+                    const string MsgChapter3 = "You have 5 attempts to mine for bits";
+                    const string XAxis = "Insert de X axis (A number between 0-4):";
+                    const string YAxis = "Insert de Y axis (A number between 0-4):";
+                    const string PositionMined = "You mine at position [{0}][{1}] ";
+                    const string MsgNotFound = "but found nothing.";
+                    const string MsgFound = "and you get {0} bits.";
+                    const string Coin = "🪙";
+                    const string NoCoin = "❌";
+                    const int tries = 5, maxValue = 2, minValue = 0, MinBits = 5, MaxBits = 51;
+
+                    int xAxis, yAxis, bits;
+                    string MsgLoot = "";
+                    string[,] mine = new string[5, 5];
+                    string[,] mineOutput = {
+                        { " ", "0", "1", "2", "3", "4" },
+                        { "0", "➖", "➖", "➖", "➖", "➖" },
+                        { "1", "➖", "➖", "➖", "➖", "➖" },
+                        { "2", "➖", "➖", "➖", "➖", "➖" },
+                        { "3", "➖", "➖", "➖", "➖", "➖" },
+                        { "4", "➖", "➖", "➖", "➖", "➖" }
+                    };
+                    ;
+
+                    Console.WriteLine(MsgChapter3);
+
+                    for (int i = 0; i < mine.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < mine.GetLength(1); j++)
+                        {
+                            mine[i, j] = random.Next(minValue, maxValue) == 0 ? Coin : NoCoin;
+                        }
+                    }
+
+                    for (int x = 0; x < mineOutput.GetLength(0); x++)
+                    {
+                        for (int y = 0; y < mineOutput.GetLength(1); y++)
+                        {
+                            Console.Write($"{mineOutput[x, y]}\t");
+                        }
+                        Console.WriteLine();
+                    }
+
+                    for (int i = 0; i < tries; i++)
+                    {
+
+                        do
+                        {
+                            Console.WriteLine(XAxis);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out xAxis) || xAxis < 0 || xAxis > 4);
+
+                        do
+                        {
+                            Console.WriteLine(YAxis);
+
+                        } while (!Int32.TryParse(Console.ReadLine(), out yAxis) || yAxis < 0 || yAxis > 4);
+
+                        if (mine[xAxis, yAxis].Equals(Coin))
+                        {
+                            mineOutput[xAxis + 1, yAxis + 1] = Coin;
+                            mine[xAxis, yAxis] = NoCoin;
+
+                            bits = random.Next(MinBits, MaxBits);
+                            MsgLoot = string.Format(MsgFound, bits);
+                            wizardBits += bits;
+                        }
+                        else
+                        {
+                            MsgLoot = MsgNotFound;
+                            mineOutput[xAxis + 1, yAxis + 1] = NoCoin;
+                        }
+
+                        Console.WriteLine(string.Concat(string.Format(PositionMined, xAxis, yAxis), MsgLoot));
+
+                        for (int x = 0; x < mineOutput.GetLength(0); x++)
+                        {
+                            for (int y = 0; y < mineOutput.GetLength(1); y++)
+                            {
+                                Console.Write($"{mineOutput[x, y]}\t");
+                            }
+                            Console.WriteLine();
+                        }
+                    }
+
+                    Console.WriteLine();
+
+                    break;
