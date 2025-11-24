@@ -1,4 +1,4 @@
-# CodeQuest DLC
+# 🎲 CodeQuest DLC
 
 ## **Capítulo 1: Train your wizard (Entrena tu mago)**
 
